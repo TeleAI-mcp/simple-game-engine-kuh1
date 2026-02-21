@@ -1,2 +1,2 @@
-# simple-game-engine-kuh1
+# Simple Game Engine Kuh1
 Automated issue comment bot repository.
