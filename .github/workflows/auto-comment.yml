@@ -1,0 +1,30 @@
+name: Auto Comment on Label
+
+on:
+  issues:
+    types: [labeled]
+
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add comment based on label
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.issue;
+            const label = context.payload.label.name;
+            const comments = {
+              'enhancement': 'Thanks for the enhancement suggestion! We appreciate your input.',
+              'completed': 'This issue has been resolved. Thank you for your contribution!',
+              'feature': 'Thank you for the feature request. We will consider including this in a future release.'
+            };
+            
+            if (comments[label]) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                body: comments[label]
+              });
+            }
